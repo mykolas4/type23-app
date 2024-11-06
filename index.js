@@ -1,10 +1,9 @@
-const { v1: uuidv1, v4: uuidv4 } = require("uuid");
+import express from "express";
+import cors from "cors";
 
-uuidv1();
-uuidv4();
-const express = require("express");
+import taskRouter from "./src/route/task.js"
+
 const app = express();
-const cors = require("cors");
 
 app.use(express.json());
 app.use(cors());
@@ -22,6 +21,8 @@ app.get("/SortFilm");
 app.get("/getFilmsbyId/:filmId");
 
 app.get("/getAllFilms");
+
+app.use(taskRouter);
 
 //CAO
 app.get("/cars/:model", (req, res) => {

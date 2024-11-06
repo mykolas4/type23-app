@@ -1,72 +1,88 @@
-const { v4: uuidv4 } = require("uuid");
+let films = [];
 
-const films = [];
+const GET_RESPONSE = (req, res) => {
+  res.json({ response: "heyoooo" });
+};
 
-module.exports.GET_RESPONSE = (req, res) => {
-    res.json({ response: "heyoooo" });
+const INSERT_FILM_RECOMMENDATION = (req, res) => {
+  const { id, title, rating, description, iMDBlink } = req.body;
+
+  const film = {
+    id,
+    title,
+    rating: parseFloat(rating),
+    description,
+    iMDBlink,
+    status: false,
+    date: new Date(),
+  };
+
+  films.push(film);
+
+  return res
+    .status(201)
+    .json({ response: "task was inserted succesfully", film: films });
+};
+
+const GET_ALL_FILM_RECOMMENDATION = (req, res) => {
+  try {
+    return res.status(200).json({ films });
+  } catch {
+    return res.status(500).json({ error: "error in fetching films" });
+  }
+};
+
+const SORT_FILM = (req, res) => {
+  try {
+    const sortedFilms = [...films].sort((a, b) => a.rating - b.rating);
+    return res.status(200).json({ films: sortedFilms });
+  } catch {
+    return res.status(500).json({ error: "error" });
+  }
+};
+const GET_FILMS_BY_ID = (req, res) => {
+  const film = films.find((t) => t.id === req.params.filmId);
+
+  if (!film) {
+    return res.status(404).json({ message: "film does not exist" });
   }
 
-  module.exports.INSERT_FILM_RECOMMENDATION = (req, res) => {
-    const { id, title, rating, description, iMDBlink } = req.body;
-  
-    const film = {
-      id,
-      title,
-      rating: parseFloat(rating),
-      description,
-      iMDBlink,
-      status: false,
-      date: new Date(),
-    };
-  
-    films.push(film);
-  
+  return res.status(200).json({ film: film });
+};
+
+const GET_ALL_FILMS = (req, res) => {
+  const films = req.body.films;
+
+  if (films && films.length > 0) {
+    const sortedFilms = [...films].sort((a, b) => b.points - a.points);
+    return res.status(200).json({ films: sortedFilms });
+  }
+
+  return res.status(200).json({ message: "no films" });
+};
+
+const DELETE_FILMS_BY_ID = (req, res) => {
+  const filmId = req.params.id;
+
+  const film = films.find((t) => t.id === filmId);
+
+  if (!film) {
     return res
-      .status(201)
-      .json({ response: "task was inserted succesfully", film: films });
+      .status(404)
+      .json({ response: `film with ID ${filmId} does not exist` });
   }
 
-  module.exports.GET_ALL_FILM_RECOMMENDATION = (req, res) => {
-  }
-    try {
-      return res.status(200).json({ films: films });
-    } catch (error) {
-      return res.status(500).json({ error: "Error" });
-    }
+  films = films.filter((t) => t.id !== filmId);
 
-module.exports.SORT_FILM = (req, res) => {}
-    try {
-      const sortedFilms = [...films].sort((a, b) => a.rating - b.rating);
-      return res.status(200).json({ films: sortedFilms });
-    } catch (error) {
-      return res.status(500).json({ error: "Error" });
-    }
+  return res.status(200).json({ response: "film was deleted" });
+};
 
-    module.exports.GET_FILMS_BY_ID = (req, res) => {
-        const film = films.find((t) => t.id === req.params.filmId);
-      
-        if (!film) {
-          return res.status(404).json({ message: "Film does not exist" });
-        }
-      
-        return res.status(200).json({ film: film });
-      };
-      
-      app.use(req, res) => {
-        res.status(404).json({ response: "Your endpoint does not exist" });
-
-      }
-
-      module.exports.GET_ALL_FILMS = (req, res) => {
-        const films = req.body.films; 
-        
-        if (films && films.length > 0) {
-          const sortedFilms = [...films].sort((a, b) => b.points - a.points);
-          return res.status(200).json({ films: sortedFilms });
-        }
-        
-        return res.status(200).json({ message: "No films" });
-      };
-
-
-      
+export {
+  GET_RESPONSE,
+  INSERT_FILM_RECOMMENDATION,
+  GET_ALL_FILM_RECOMMENDATION,
+  SORT_FILM,
+  GET_FILMS_BY_ID,
+  GET_ALL_FILMS,
+  DELETE_FILMS_BY_ID,
+};
