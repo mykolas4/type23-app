@@ -23,6 +23,6 @@ router.get("/getAllFilms", GET_ALL_FILMS);
 
 router.get("/films/:filmId", GET_FILMS_BY_ID);
 router.delete("/films/:id", DELETE_FILMS_BY_ID);
-router.get("/films/sorted", SORT_FILM);
+router.get("/films/sort", SORT_FILM);
 
 export default router;
