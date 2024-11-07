@@ -8,19 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.listen(3000);
-
-app.post("/GetResponse");
-
-app.post("/InsertFilmRecommendation");
-
-app.get("/getAllFilmRecommendation");
-
-app.get("/SortFilm");
-
-app.get("/getFilmsbyId/:filmId");
-
-app.get("/getAllFilms");
 
 app.use(taskRouter);
 
@@ -29,3 +16,5 @@ app.get("/cars/:model", (req, res) => {
   console.log(req.params.model);
   res.send("OK");
 });
+
+app.listen(3000);

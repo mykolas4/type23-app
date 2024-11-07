@@ -2,12 +2,14 @@ let films = [];
 
 import { v4 as uuidv4 } from "uuid";
 
-const GET_RESPONSE = (req, res) => {
-  res.json({ response: "heyoooo" });
-};
-
 const INSERT_FILM_RECOMMENDATION = (req, res) => {
   const { id, title, rating, description, iMDBlink } = req.body;
+
+  const titleExists = films.some((film) => film.title === title);
+
+  if (titleExists) {
+    return res.status(409).json({ response: "title exists" });
+  }
 
   const film = {
     id,
@@ -79,12 +81,26 @@ const DELETE_FILMS_BY_ID = (req, res) => {
   return res.status(200).json({ response: "film was deleted" });
 };
 
+const UPDATE_FILMS_BY_ID = (req, res) => {
+  const film = films.find((t) => t.id === req.params.filmId);
+
+  if (!film) {
+    return res.status(404).json({ message: "film does not exist" });
+  }
+
+  const index = films.findIndex((t) => t.id === req.params.id);
+
+  films[index] = { ...films[index], ...req.body };
+
+  return res.status(200).json({ film: film });
+};
+
 export {
-  GET_RESPONSE,
   INSERT_FILM_RECOMMENDATION,
   GET_ALL_FILM_RECOMMENDATION,
   SORT_FILM,
   GET_FILMS_BY_ID,
   GET_ALL_FILMS,
   DELETE_FILMS_BY_ID,
+  UPDATE_FILMS_BY_ID,
 };

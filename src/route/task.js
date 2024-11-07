@@ -5,24 +5,18 @@ import {
   GET_FILMS_BY_ID,
   GET_ALL_FILMS,
   DELETE_FILMS_BY_ID,
+  UPDATE_FILMS_BY_ID,
 } from "../controller/task.js";
 
 const router = express.Router();
 
-// router.get("/GetResponse", GET_RESPONSE);
-
-// router.get("/InsertFilmRecommendation", INSERT_FILM_RECOMMENDATION);
-
-//router.get("/getAllFilmRecommendation", GET_ALL_FILM_RECOMMENDATION);
-
-router.post("/SortFilm", SORT_FILM);
-
-router.get("/getFilmsbyId", GET_FILMS_BY_ID);
-
-router.get("/getAllFilms", GET_ALL_FILMS);
-
-router.get("/films/:filmId", GET_FILMS_BY_ID);
-router.delete("/films/:id", DELETE_FILMS_BY_ID);
 router.get("/films/sort", SORT_FILM);
+router.get("/films/:id", GET_FILMS_BY_ID);
+router.get("/films/", GET_ALL_FILMS);
+router.delete("/films/:id", DELETE_FILMS_BY_ID);
+router.put("/films/:id", UPDATE_FILMS_BY_ID);
+
 
 export default router;
+
+
